@@ -175,3 +175,20 @@ jobs:
                 cd build
                 cmake -GNinja -DWERROR=ON -DCMAKE_TOOLCHAIN_FILE=../cmake/mingw-w64-toolchain.cmake ${{ matrix.flags }} ..
                 cmake --build .
+    switch:
+        name: Nintendo Switch
+        runs-on: ubuntu-24.04
+        container:
+            image: devkitpro/devkita64
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v3
+            with:
+                submodules: true
+
+          - name: Build Switch binary
+            run: |
+                mkdir build
+                cd build
+                /opt/devkitpro/portlibs/switch/bin/aarch64-none-elf-cmake -GNinja -DWERROR=ON ..
+                /opt/devkitpro/portlibs/switch/bin/aarch64-none-elf-cmake --build .
